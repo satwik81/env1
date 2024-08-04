@@ -1,0 +1,104 @@
+
+<html>
+<head>
+    <title>Upload Successful</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            outline: none;
+            color: #fff;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 9px #999;
+        }
+
+        .button:hover {background-color: #3e8e41}
+
+        .button:active {
+            background-color: #3e8e41;
+            box-shadow: 0 5px #666;
+            transform: translateY(4px);
+        }
+
+       
+        a {
+            color: #33ff00;
+        }
+        .btn {
+            background-color: #333;
+            color: #33ff00;
+            border: 1px solid #33ff00;
+        }
+        .btn:hover {
+            background-color: #33ff00;
+            color: #333;
+        }
+        .table-responsive {
+            border: 1px solid #33ff00;
+            padding: 10px;
+            {% comment %} background-color: #2b2b2b; {% endcomment %}
+        }
+        {% comment %} img {
+            border: 2px solid #33ff00;
+        } {% endcomment %}
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="mt-4">File Uploaded and Processed Successfully</h1>
+        <p>Uploaded File Name: {{ file_name|safe }}</p>
+
+        <h2 class="mt-4">Processed Data</h2>
+        {%if dataset_html%}
+            <div class="table-responsive">
+                {{dataset_html|safe }}
+            </div>
+        {%else%}
+            <p>No data to display.</p>
+        {%endif%}
+
+        <h2 class="mt-4">Generated Plots</h2>
+        {%if plot_paths%}
+            <div class="row">
+                {%for plot_path in plot_paths%}
+                    <div class="col-md-4 mb-3">
+                        <img src="{{ plot_path }}" class="img-fluid" alt="Plot">
+                    </div>
+                {%endfor%}
+            </div>
+        {%else%}
+            <p>No plots generated.</p>
+        {%endif%}
+ 
+        {% if debug_info %}
+            <h2 class="mt-4">Debug Information</h2>
+            
+            <h2 class="mt-4">Summary Statistics</h2>
+        {% if debug_info.summary_stats %}
+            <div class="table-responsive">
+                {{ debug_info.summary_stats|safe }}
+            </div>
+        {% else %}
+            <p>No summary statistics to display.</p>
+        {% endif %}
+
+        <h2 class="mt-4">Missing Values</h2>
+        {% if debug_info.missing_values %}
+            <div class="table-responsive">
+                {{ debug_info.missing_values|safe }}
+            </div>
+        {% else %}
+            <p>No missing values to display.</p>
+        {% endif %}
+        {% endif %}
+        <a href="{%url 'home' %}" class="button">Upload another file</a>
+    </div>
+</body>
+</html>
